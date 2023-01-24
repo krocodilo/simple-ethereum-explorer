@@ -1,7 +1,5 @@
 # Simple Ethereum Explorer
 
----
-
 ### Task
 
 Create an application that will allow a user to view transaction data from the Ethereum blockchain associated with a specific wallet address W that the user inputs, starting with block B. The application should get information on:
