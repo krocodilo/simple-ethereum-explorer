@@ -1,7 +1,5 @@
 # Simple Ethereum Explorer
 
-This is an Ethereum Transaction Crawler created per request of a blockchain-focused company, regarding an application for internship.
-
 ---
 
 ### Task
