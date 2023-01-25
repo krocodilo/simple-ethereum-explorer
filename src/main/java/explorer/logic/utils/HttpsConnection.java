@@ -20,14 +20,24 @@ public class HttpsConnection {
         }
     }
 
+    public static class APIException extends Exception {
+        public APIException(Throwable cause) {
+            super(cause);
+        }
+        public APIException(String message) {
+            super(message);
+        }
+    }
+
     /**
      * Execute an API call and return the data in JSON format
      * @param url
      * @return JSON data
      * @throws JSONException
      * @throws HttpsConException
+     * @throws APIException
      */
-    public static JSONObject callAPI(String url) throws JSONException, HttpsConException {
+    public static Object callAPI(String url) throws JSONException, HttpsConException, APIException {
 
         String resp;
         try{
@@ -36,7 +46,13 @@ public class HttpsConnection {
             throw new HttpsConnection.HttpsConException(e);
         }
 
-        return new JSONObject(resp);
+        JSONObject j = new JSONObject(resp);
+
+        if(j.getInt("status") == 0) {
+            throw new APIException( j.get("message").toString() + "\n" + j.get("result").toString() );
+        }
+
+        return j.get("result");     // might be a String, JSONArray, integer, etc... Depends on the request
     }
 
     /**
