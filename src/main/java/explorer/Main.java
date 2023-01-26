@@ -1,14 +1,23 @@
 package explorer;
 
-import explorer.logic.utils.HttpsConnection;
+import explorer.logic.Explorer;
+import explorer.logic.models.Transaction;
+
+import java.math.BigInteger;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println(
-                HttpsConnection.callAPI(
-                        "https://api.etherscan.io/api?module=account&action=balance&address=0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae&tag=latest&apikey=YourApiKeyToken")
+
+        Explorer eth = new Explorer("0x5abfec25f74cd88437631a7731906932776356f9");
+
+        System.out.println("\n\n ---> " +
+                eth.getBalance("2020-01-10").toString()
+                + " ETH\n\n"
         );
+
+        for(Transaction t : eth.getTransactionsSinceBlock(BigInteger.ZERO))
+            System.out.println("\n" + t.toString());
     }
 }

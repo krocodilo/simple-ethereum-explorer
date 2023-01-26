@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Explorer {
     /**
-     * Has the logic of the program.
+     * Receives and delegates requests from the UI
      */
 
     private final String address;
