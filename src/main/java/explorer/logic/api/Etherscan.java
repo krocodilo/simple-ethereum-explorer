@@ -70,6 +70,8 @@ public class Etherscan {
             for(Object obj : resp){
                 JSONObject j = (JSONObject) obj;
 
+                String m = j.getString("methodId");
+
                 txns.add( new Transaction(
                         j.getString("blockNumber"),
                         j.getString("hash"),
@@ -78,14 +80,18 @@ public class Etherscan {
                         j.getString("to"),
                         j.getString("value"),
                         j.getString("gasUsed"),
-                        j.getString("contractAddress")
+                        j.getString("contractAddress"),
+                        // Indicate if this transaction was an interaction with (or creation of) a contract:
+                        ! m.isBlank()
+                                && m.compareToIgnoreCase("0x") != 0
+                                && ! j.getString("contractAddress").isBlank()
                     ));
                 numTxnsReceived++;
             }
 
             if(numTxnsReceived == 10000) {
                 // set the start block of the next request to the block of the last transaction processed
-                firstBlock = new BigInteger( txns.get(txns.size()-1).blockNum() );
+                firstBlock = new BigInteger( txns.get(txns.size()-1).blockNumber() );
             }
 
             // Etherscan's API limit is 10k transactions per request
