@@ -3,11 +3,32 @@
 <head>
     <title>Transactions</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/base-style.css">
 </head>
 <body>
-    <b>Transactions</b>
-    <ul th:each="txn : ${transactions}">
-        <li th:text="${txn}"></li>
-    </ul>
+    <p>
+        <a href="/">Return home</a>
+    </p>
+    <p>
+        <b>Transactions</b>
+    </p>
+
+    <table>
+        <tr>
+            <th>Txn Hash</th> <th>Block</th> <th>Date Time (UTC)</th> <th>From</th>
+            <th>To</th> <th>Smart Contract</th> <th>Value</th>
+        </tr>
+        <th:block th:each="txn : ${transactions}">
+            <tr>
+                <td th:text="${txn.hash}" style="max-width:200px; overflow: hidden; text-overflow: ellipsis"></td>
+                <td th:text="${txn.blockNumber}"></td>
+                <td th:text="${txn.timeStamp}"></td>
+                <td th:text="${txn.from}" style="max-width:200px; overflow: hidden; text-overflow: ellipsis"></td>
+                <td th:text="${txn.to}" style="max-width:200px; overflow: hidden; text-overflow: ellipsis"></td>
+                <td th:text="${txn.contractAddress}" style="max-width:200px; overflow: hidden; text-overflow: ellipsis"></td>
+                <td th:text="${txn.ethValueWei}">ETH</td>
+            </tr>
+        </th:block>
+    </table>
 </body>
 </html>

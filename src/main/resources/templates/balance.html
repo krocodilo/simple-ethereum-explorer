@@ -1,11 +1,13 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/base-style.css">
 </head>
 <body>
-<p>Balance</p>
+<p>Balance </p>
+<p th:text="${balance}"></p>
 <a href="/">Index</a>
 </body>
 </html>

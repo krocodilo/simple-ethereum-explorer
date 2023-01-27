@@ -3,14 +3,14 @@
 <head>
     <title>Home</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/base-style.css">
 </head>
 <body>
-<p>Index</p>
-<form th:action="@{/transactions}" method="post">
-    <input type="text" th:value="${address}" name="address"/>
-    <p></p>
-    <input type="submit" value="Search"></input>
-</form>
-<a href="/transactions/0x12345a">Transactions</a>
+    <b>Index</b>
+    <form th:action="@{/transactions}" method="post">
+        <input type="text" th:value="${address}" name="address"/>
+        <p></p>
+        <input type="submit" value="Search"/>
+    </form>
 </body>
 </html>
