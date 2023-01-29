@@ -31,4 +31,17 @@ public class Utils {
     public static BigInteger getUnixTimeFromDate(Date date) {
         return BigInteger.valueOf( date.getTime() / 1000 );     // .getTime returns in miliseconds
     }
+
+    /**
+     * Converts Unix Time to date and time formatted as: "yyyy-MM-dd HH:mm:ss"
+     * @param timestamp
+     * @return Formatted date
+     */
+    public static String getDateFromUnixTime(long timestamp) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        return sdf.format( new Date(timestamp * 1000) );    // to get in miliseconds
+    }
 }
