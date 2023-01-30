@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class TransactionsController {
 
     String address = "";
-    final int pagesize = 20;
+    final int pagesize = 50;
     Explorer eth;
 
     @PostMapping
@@ -45,10 +45,14 @@ public class TransactionsController {
 
             }
             ArrayList<Transaction> txns = new ArrayList<>(
-                    eth.getPageOfTransactions(bl, pagesize, pag)
+//                    eth.getPageOfTransactions(bl, pagesize, pag)
+                    eth.getTxnsSinceBlock(bl)
             );
 
             model.addAttribute("transactions", txns.toArray());     // Send array to the View, with the name of "transactions"
+            model.addAttribute("thisAddress", eth.getAddress());
+
+            model.addAttribute("pagetitle", address + " transactions");
 
         } catch (Exception e) {
             throw e;    // Todo create error page

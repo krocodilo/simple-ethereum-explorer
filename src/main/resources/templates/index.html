@@ -1,16 +1,52 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Home</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="/base-style.css">
+<head th:replace="layout :: htmlhead">
+    <title>Explorer</title>
 </head>
 <body>
-    <b>Index</b>
-    <form th:action="@{/transactions}" method="post">
-        <input type="text" th:value="${address}" name="address"/>
-        <p></p>
-        <input type="submit" value="Search"/>
-    </form>
+    <div th:replace="layout :: navbar"></div>
+
+
+    <div class="container card bg-dark p-5" style="width:50%; height:40%;">
+
+        <form class="form-group" method="post">
+            <div class="row mb-5">
+                <div class="col">
+                    <div class="form-floating">
+                        <input type="text" class="form-control form-control-lg bg-secondary" id="floatingAddress" name="address">
+                        <label for="floatingAddress", class="text-dark">Address</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-4 align-items-center text-center">
+                <div class="col">
+                    <div class="form-floating">
+                        <input type="text" class="form-control form-control-lg bg-secondary" id="floatingBlock" name="block">
+                        <label for="floatingBlock" class="text-dark">Starting block (Default = 0)</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <button class="btn btn-outline-secondary btn-lg" type="submit" formaction="/transactions">Search Transactions</button>
+                </div>
+            </div>
+
+            <div class="row my-4 mb-0 align-items-center text-center">
+                <div class="col">
+                    <div class="form-floating">
+                        <input type="date" class="form-control form-control-lg bg-secondary" id="floatingBalance" name="date">
+                        <label for="floatingBalance" class="text-dark">Date</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <button class="btn btn-outline-secondary btn-lg" type="submit" formaction="/balance">Get Balance</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div th:replace="layout :: footer"></div>
 </body>
 </html>
