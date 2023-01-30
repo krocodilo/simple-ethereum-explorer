@@ -3,6 +3,7 @@ package explorer.logic.api;
 import explorer.logic.utils.HttpsConnection;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Convert;
 
@@ -33,11 +34,13 @@ public class Infura {
     }
 
     public BigDecimal getBalance(String address, BigInteger block) throws HttpsConnection.ConnectionException {
+        EthGetBalance apiresp = null;
         BigInteger wei;
         try {
-            wei = infuraAPI.ethGetBalance(address, DefaultBlockParameter.valueOf(block))
-                    .send().getBalance();
-        } catch (IOException e){
+            apiresp = infuraAPI.ethGetBalance(address, DefaultBlockParameter.valueOf(block))
+                    .send();
+            wei = apiresp.getBalance();
+        } catch (Exception e){
             throw new HttpsConnection.ConnectionException(e);
         }
 
