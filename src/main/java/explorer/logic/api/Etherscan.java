@@ -11,6 +11,8 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
+import static explorer.logic.utils.Utils.fromWeiToETH;
+
 public class Etherscan {
 
     private static final String etherscanApiKey = "Q5RM9IVMRDHPK1VFYP7JUDFBC83BJG4R9I";
@@ -83,10 +85,10 @@ public class Etherscan {
                         j.getString("to").isBlank() ? j.getString("contractAddress") : j.getString("to"),
 
                         // Save value transfered in ETH, instead of Wei units:
-                        Convert.fromWei(j.getString("value"), Convert.Unit.ETHER).setScale(4, RoundingMode.HALF_EVEN).toPlainString(),
+                        fromWeiToETH( j.getString("value") ).toPlainString(),
 
                         // Save txn fee amount in ETH instead of Wei units:
-                        Convert.fromWei(txnFee, Convert.Unit.ETHER).setScale(4, RoundingMode.HALF_EVEN).toPlainString(),
+                        fromWeiToETH( txnFee ).toPlainString(),
 
                         // Is a contract creation transaction if this field is not empty:
                         ! j.getString("contractAddress").isBlank(),

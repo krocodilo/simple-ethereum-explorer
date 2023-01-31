@@ -22,8 +22,9 @@ public class TransactionController {
         mav.addObject("txn",
                 Explorer.getTransactionInfo(txnHash)
         );
+        mav.addObject("thisHash", txnHash);
 
-        mav.addObject("pagetitle", "TxnTransaction " + txnHash);
+        mav.addObject("pagetitle", "Transaction " + txnHash);
 
         return mav;
     }

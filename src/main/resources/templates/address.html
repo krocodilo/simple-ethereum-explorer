@@ -4,6 +4,7 @@
 <body>
     <div th:replace="layout :: navbar"></div>
 
+    <h1 class="text-center mb-5">Address</h1>
     <h2 class="text-center" th:text="${thisAddress}"></h2>
 
 <!--    <div class="container">-->
@@ -31,7 +32,7 @@
 
                     <td style="max-width:200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
                         <span th:if="${txn.hasError}">&#9888</span>
-                        <span th:text="${txn.hash}"></span>
+                        <a th:text="${txn.hash}" th:href="@{/transaction/} + ${txn.hash}"></a>
                     </td>
                     <td th:text="${txn.blockNumber}"></td>
                     <td th:text="${txn.timeStamp}" style="white-space: nowrap"></td>
@@ -39,7 +40,7 @@
                     <!-- 'From' Column -->
                     <td style="max-width:35ch; overflow: hidden; text-overflow: ellipsis">
                         <span th:if="${#strings.equalsIgnoreCase(txn.from, thisAddress)}" th:text="${#strings.substring(thisAddress, 0, 20) + '...'}"></span>
-                        <a th:if="${not #strings.equalsIgnoreCase(txn.from, thisAddress)}" th:text="${txn.from}" th:href="@{/transactions/} + ${txn.from}" ></a>
+                        <a th:if="${not #strings.equalsIgnoreCase(txn.from, thisAddress)}" th:text="${txn.from}" th:href="@{/transactions/} + ${txn.from}"></a>
                     </td>
 
                     <!-- Direction indicator Column -->

@@ -5,6 +5,8 @@ import explorer.logic.data.Txn;
 import explorer.logic.utils.HttpsConnection;
 import explorer.logic.utils.Utils;
 import org.web3j.crypto.WalletUtils;
+import org.web3j.protocol.core.methods.response.Transaction;
+import org.web3j.utils.Convert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static explorer.logic.utils.Utils.fromWeiToETH;
 
 public class Explorer {
 
@@ -114,14 +118,25 @@ public class Explorer {
 
 
 
-    public static Map<String, String> getTransactionInfo(String txnHash) {
+    public static Map<String, String> getTransactionInfo(String txnHash) throws Exception {
 
         Infura infura = new Infura();
 
+        Transaction txn = infura.getTransactionInfo(txnHash);
 
 
-        HashMap<String, String> map = new HashMap<>();
-
-        return map;
+        // Must leave this method in order of display in the webpage
+        return Map.of(
+                "Block Hash", txn.getBlockHash() != null? txn.getBlockHash() : "Pending",
+                "Block Number", txn.getBlockNumber().toString() != null? txn.getBlockNumber().toString() : "Pending",
+                "Index", txn.getTransactionIndex().toString() != null? txn.getTransactionIndex().toString() : "Pending",  // is null if Pending
+                "From", txn.getFrom(),
+                "To", txn.getTo() != null? txn.getTo() : "(Contract Creation)",
+                "Value Transferred", fromWeiToETH( txn.getValue().toString() ).toPlainString(),
+//                "Gas Used", "ND!!!!!!!!!!!!!",   // Only Etherscan shows the amount used. Others show only the committed
+                "Gas Limit", txn.getGas().toString(),
+                "Gas Price", txn.getGasPrice().toString(),
+                "Input", txn.getInput()
+        );
     }
 }

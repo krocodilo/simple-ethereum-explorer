@@ -4,7 +4,8 @@
 <body>
     <div th:replace="layout :: navbar"></div>
 
-    <h2 class="text-center" th:text="${thisAddress}"></h2>
+    <h1 class="text-center mb-5">Transaction</h1>
+    <h3 class="text-center" th:text="${thisHash}"></h3>
 
     <!--    <div class="container">-->
     <!--        <div class="row m-5 gx-5">-->
@@ -19,60 +20,28 @@
 
     <div class="m-5">
         <table class="table table-hover" style="vertical-align:middle">
-            <tr class="table-dark">
-                <th:block th:each="header : ${ {'#', 'Txn Hash', 'Block', 'Date Time (UTC)', 'From', '', 'To', 'Value', 'Txn Fee'} }">
-                    <th th:text="${header}" scope="col"></th>
-                </th:block>
-            </tr>
-            <th:block th:each="txn : ${transactions}">
+            <th:block th:each="name : ${txn}">
                 <tr>
-                    <th th:text="${txnStat.count}" scope="row"></th>
-                    <!-- txnStat is an auto generated variable -->
-
-                    <td style="max-width:200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
-                        <span th:if="${txn.hasError}">&#9888</span>
-                        <span th:text="${txn.hash}"></span>
+                    <th th:text="${name.key}" scope="row"></th>
+                    <td style="overflow: auto; text-overflow: ''; text-overflow: ellipsis">
+                        <th:block th:if="${ not #strings.equalsIgnoreCase(name.key, 'Input')}">
+                            <span th:text="${name.value}"></span>
+                        </th:block>
+                        <div th:if="${#strings.equalsIgnoreCase(name.key, 'Input')}" >
+                            <textarea readonly th:text="${name.value}"
+                                class="form-control bg-dark btn btn-outline-secondary text-warning"
+                                style="text-align: left"></textarea>
+                        </div>
+<!--                        <th:block th:if="${#strings.equalsIgnoreCase(name.key, 'Input')}">-->
+<!--                            <div class="form-group">-->
+<!--                                <textarea class="form-control" id="exampleTextarea" rows="1" style="height: 163px; line-height: 22.5px;" data-lt-tmp-id="lt-579989" spellcheck="false" data-gramm="false"></textarea>-->
+<!--                            </div>-->
+<!--                        </th:block>-->
                     </td>
-                    <td th:text="${txn.blockNumber}"></td>
-                    <td th:text="${txn.timeStamp}" style="white-space: nowrap"></td>
-
-                    <!-- 'From' Column -->
-                    <td style="max-width:35ch; overflow: hidden; text-overflow: ellipsis">
-                        <span th:if="${#strings.equalsIgnoreCase(txn.from, thisAddress)}" th:text="${#strings.substring(thisAddress, 0, 20) + '...'}"></span>
-                        <a th:if="${not #strings.equalsIgnoreCase(txn.from, thisAddress)}" th:text="${txn.from}" th:href="@{/transactions/} + ${txn.from}" ></a>
-                    </td>
-
-                    <!-- Direction indicator Column -->
-                    <td class="text-center">
-                        <span th:if="${#strings.equalsIgnoreCase(txn.from, txn.to)}">SELF</span>
-                        <block th:unless="${#strings.equalsIgnoreCase(txn.from, txn.to)}">  <!-- Else... -->
-                            <span th:if="${#strings.equalsIgnoreCase(txn.from, thisAddress)}">OUT</span>
-                            <span th:if="${#strings.equalsIgnoreCase(txn.to, thisAddress)}">IN</span>
-                        </block>
-                    </td>
-
-                    <!-- 'To' Column -->
-                    <td style="max-width:35ch; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
-                        <span th:if="${txn.contractInteraction or txn.contractCreated}">&#128462</span>
-                        <block th:if="${txn.contractCreated}">
-                            <span th:if="${#strings.equalsIgnoreCase(txn.to, thisAddress)}">Contract Creation</span>
-                            <a th:if="${not #strings.equalsIgnoreCase(txn.to, thisAddress)}" th:href="@{/transactions/} + ${txn.to}">Contract Creation</a>
-                        </block>
-                        <block th:unless="${txn.contractCreated}">
-                            <span th:if="${#strings.equalsIgnoreCase(txn.to, thisAddress)}" th:text="${#strings.substring(thisAddress, 0, 20) + '...'}"></span>
-                            <a th:if="${not #strings.equalsIgnoreCase(txn.to, thisAddress)}" th:text="${txn.to}" th:href="@{/transactions/} + ${txn.to}" ></a>
-                        </block>
-                    </td>
-
-                    <!--  -->
-                    <td th:text="${txn.ethValue} + ' eth'" style="max-width:200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"></td>
-                    <td th:text="${txn.txnFee} + ' eth'" style="max-width:200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"></td>
                 </tr>
             </th:block>
         </table>
     </div>
-
-
 
     <div th:replace="layout :: footer"></div>
 </body>
