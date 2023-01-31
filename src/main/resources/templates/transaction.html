@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: htmlhead"></head>
+<body>
+    <div th:replace="layout :: navbar"></div>
+
+    <h2 class="text-center" th:text="${thisAddress}"></h2>
+
+    <!--    <div class="container">-->
+    <!--        <div class="row m-5 gx-5">-->
+    <!--            <div class="col card bg-dark">-->
+    <!--                <p style="height:10%">Balance</p>-->
+    <!--            </div>-->
+    <!--            <div class="col card bg-dark">-->
+    <!--                <p style="height:10%">grtsgtrs</p>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+    <div class="m-5">
+        <table class="table table-hover" style="vertical-align:middle">
+            <tr class="table-dark">
+                <th:block th:each="header : ${ {'#', 'Txn Hash', 'Block', 'Date Time (UTC)', 'From', '', 'To', 'Value', 'Txn Fee'} }">
+                    <th th:text="${header}" scope="col"></th>
+                </th:block>
+            </tr>
+            <th:block th:each="txn : ${transactions}">
+                <tr>
+                    <th th:text="${txnStat.count}" scope="row"></th>
+                    <!-- txnStat is an auto generated variable -->
+
+                    <td style="max-width:200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
+                        <span th:if="${txn.hasError}">&#9888</span>
+                        <span th:text="${txn.hash}"></span>
+                    </td>
+                    <td th:text="${txn.blockNumber}"></td>
+                    <td th:text="${txn.timeStamp}" style="white-space: nowrap"></td>
+
+                    <!-- 'From' Column -->
+                    <td style="max-width:35ch; overflow: hidden; text-overflow: ellipsis">
+                        <span th:if="${#strings.equalsIgnoreCase(txn.from, thisAddress)}" th:text="${#strings.substring(thisAddress, 0, 20) + '...'}"></span>
+                        <a th:if="${not #strings.equalsIgnoreCase(txn.from, thisAddress)}" th:text="${txn.from}" th:href="@{/transactions/} + ${txn.from}" ></a>
+                    </td>
+
+                    <!-- Direction indicator Column -->
+                    <td class="text-center">
+                        <span th:if="${#strings.equalsIgnoreCase(txn.from, txn.to)}">SELF</span>
+                        <block th:unless="${#strings.equalsIgnoreCase(txn.from, txn.to)}">  <!-- Else... -->
+                            <span th:if="${#strings.equalsIgnoreCase(txn.from, thisAddress)}">OUT</span>
+                            <span th:if="${#strings.equalsIgnoreCase(txn.to, thisAddress)}">IN</span>
+                        </block>
+                    </td>
+
+                    <!-- 'To' Column -->
+                    <td style="max-width:35ch; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
+                        <span th:if="${txn.contractInteraction or txn.contractCreated}">&#128462</span>
+                        <block th:if="${txn.contractCreated}">
+                            <span th:if="${#strings.equalsIgnoreCase(txn.to, thisAddress)}">Contract Creation</span>
+                            <a th:if="${not #strings.equalsIgnoreCase(txn.to, thisAddress)}" th:href="@{/transactions/} + ${txn.to}">Contract Creation</a>
+                        </block>
+                        <block th:unless="${txn.contractCreated}">
+                            <span th:if="${#strings.equalsIgnoreCase(txn.to, thisAddress)}" th:text="${#strings.substring(thisAddress, 0, 20) + '...'}"></span>
+                            <a th:if="${not #strings.equalsIgnoreCase(txn.to, thisAddress)}" th:text="${txn.to}" th:href="@{/transactions/} + ${txn.to}" ></a>
+                        </block>
+                    </td>
+
+                    <!--  -->
+                    <td th:text="${txn.ethValue} + ' eth'" style="max-width:200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"></td>
+                    <td th:text="${txn.txnFee} + ' eth'" style="max-width:200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"></td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+
+
+
+    <div th:replace="layout :: footer"></div>
+</body>
+</html>
