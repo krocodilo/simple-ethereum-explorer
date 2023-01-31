@@ -18,18 +18,14 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/">Home
-                                <span class="visually-hidden">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Transactions</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Balance</a>
-                        </li>
                     </ul>
+                    <form class="form-group d-flex" action="/address" method="post">
+                        <input type="text" class="form-control me-sm-2 px-3 bg-secondary" style="min-width:25rem"
+                               name="address" pattern="\b0x[a-f0-9]{40}\b" placeholder="Address" required>
+                        <input type="number" class="form-control me-sm-2 px-3 bg-secondary"
+                               style="max-width:12rem" name="block" min="0" placeholder="Block (Default = 0)">
+                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+                    </form>
                 </div>
             </div>
         </nav>
@@ -37,8 +33,8 @@
 
 
 
-    <div th:fragment="footer">
-
+    <div th:fragment="footer" class="my-4 text-center" style="white-space:pre">
+        Made  with  &#9829  by  David  Cruz
     </div>
 
 </body>
