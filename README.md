@@ -29,13 +29,20 @@ If a user requests to view transactions associated with the address `0xaa7a9ca87
 ## -> My Solution
 #### Technologies Used
 - Java, using the Spring Boot framework for the creation and management of webservices.
-- Thymeleaf, for rendering of variables and programming logic in the web service's Views.
+  - Web3j library. 
+- Thymeleaf, for rendering of variables and programming logic in the web service's Views (I used Spring MVC (Model-View-Controller)).
 - Javascript, for fetching information from a REST API created using Spring Boot.
 
 - Infura API, to get the historical balance of an address at a specific timestamp/block
 - Etherscan API
 
 #### Mechanics / Logic
+
+
+#### Improvements Needed
+- Have a cache for the most recent requests
+- Split API requests into different threads, to avoid waiting so long for large transaction lists.
+- Pagination
 
 
 #### Instructions
