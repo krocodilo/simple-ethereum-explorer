@@ -4,15 +4,15 @@
 <body>
     <div th:replace="layout :: navbar"></div>
 
-    <h1 class="text-center mb-5">Transaction</h1>
-    <h3 class="text-center" th:text="${thisHash}"></h3>
+    <h2 class="text-center"><strong>Transaction</strong></h2>
+    <h3 class="text-center mt-3 mb-5" th:text="${thisHash}"></h3>
 
-    <div class="m-5">
+    <div class="m-5 pt-4">
         <table class="table table-hover" style="vertical-align:middle">
             <th:block th:each="name : ${txn}">
                 <tr>
-                    <th th:text="${name.key}" scope="row"></th>
-                    <td style="overflow: auto; text-overflow: ''; text-overflow: ellipsis">
+                    <th class="p-3" th:text="${name.key}" scope="row"></th>
+                    <td class="p-3" style="overflow: auto; text-overflow: ''; text-overflow: ellipsis">
                         <th:block th:if="${ not #strings.equalsIgnoreCase(name.key, 'Input')}">
                             <span th:text="${name.value}"></span>
                         </th:block>

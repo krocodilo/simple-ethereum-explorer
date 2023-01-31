@@ -9,9 +9,10 @@
 
     <div th:replace="layout :: navbar"></div>
 
-    <h1 class="text-center mb-5">Address</h1>
-    <h2 class="text-center" th:text="${thisAddress}"></h2>
+    <h2 class="text-center"><strong>Address</strong></h2>
+    <h3 class="text-center mt-3 mb-5" th:text="${thisAddress}"></h3>
 
+<!--    Balance cards -->
     <div class="container">
         <div class="row">
             <div class="col card bg-dark my-4 me-4 px-5">
@@ -41,6 +42,7 @@
         </div>
     </div>
 
+<!--    Table -->
     <div class="m-4">
         <table class="table table-hover" style="vertical-align:middle">
             <tr class="table-dark">

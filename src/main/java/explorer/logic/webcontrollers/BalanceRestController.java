@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/balance")
-public class BalanceController {
+public class BalanceRestController {
 
     @GetMapping({"/{address}"})
     public String getBalance( @PathVariable String address ) throws Exception {
