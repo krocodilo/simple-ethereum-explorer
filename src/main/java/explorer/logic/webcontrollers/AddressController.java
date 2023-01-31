@@ -58,7 +58,10 @@ public class AddressController {
                 eth.getTxnsSinceBlock(block)
         );
 
+        String bal = Explorer.getBalance(address, null).toPlainString();
+
         mav.addObject("transactions", txns.toArray());     // Send array to the View, with the name of "transactions"
+        mav.addObject("currBalance", bal);
         mav.addObject("thisAddress", eth.getAddress());
 
         mav.addObject("pagetitle", address);

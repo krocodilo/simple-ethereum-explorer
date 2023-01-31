@@ -43,7 +43,7 @@ public class Explorer {
     /**
      *
      * @param address
-     * @param date - if null or empty, will use current date and time
+     * @param date if null or empty, will use current date and time
      * @return
      * @throws Exception
      */

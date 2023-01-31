@@ -1,42 +1,43 @@
 package explorer.logic.webcontrollers;
 
 import explorer.logic.Explorer;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+@RestController
 @RequestMapping("/balance")
 public class BalanceController {
 
-
-    @PostMapping
-    public String balancePOST(
-            @RequestParam String address,
-            @RequestParam String date
-    ) {
-        // Receives the POST request from the Homepage form
-        return "redirect:/balance/" + address + "?date=" + date;
-    }
-
     @GetMapping({"/{address}"})
-    public ModelAndView getBalanceAtDate(
-            @PathVariable String address,
-            @RequestParam(name="date", required=false) String date
-    ) throws Exception {
-
-        ModelAndView mav = new ModelAndView("balance"); // balance.html
+    public String getBalance( @PathVariable String address ) throws Exception {
 
         // Validate address
         if( ! Explorer.isValidAddress(address) )
             throw new Exception("Invalid address.");
 
-        mav.addObject("balance",
-                Explorer.getBalance(address, date) + " ETH"
-        );
+        return getBalanceAtDate(address, null);
+    }
 
-        mav.addObject("pagetitle", address + " balance");
+    @GetMapping({"/{address}/{date}"})
+    public String getBalanceAtDate(
+            @PathVariable String address,
+            @PathVariable String date
+    ) throws Exception {
 
-        return mav;  // Returns view balance.html
+        // Validate address
+        if( ! Explorer.isValidAddress(address) )
+            throw new Exception("Invalid address.");
+
+        String resp = "";
+
+        try{
+            if(date != null)    // If its an historical balance
+                resp = "Balance on that date:   ";
+            resp = resp + Explorer.getBalance(address, date).toPlainString() + "  ETH";
+        } catch (Exception e){
+            resp = e.getMessage();
+            e.printStackTrace();
+        }
+
+        return "{\"resp\":\"" + resp + "\"}";
     }
 }

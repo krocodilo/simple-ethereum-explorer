@@ -1,24 +1,47 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout :: htmlhead"></head>
 <body>
+    <script src="/js/getBalance.js"></script>
+    <script>
+        const thisAddress = "[[${thisAddress}]]";
+    </script>
+
     <div th:replace="layout :: navbar"></div>
 
     <h1 class="text-center mb-5">Address</h1>
     <h2 class="text-center" th:text="${thisAddress}"></h2>
 
-<!--    <div class="container">-->
-<!--        <div class="row m-5 gx-5">-->
-<!--            <div class="col card bg-dark">-->
-<!--                <p style="height:10%">Balance</p>-->
-<!--            </div>-->
-<!--            <div class="col card bg-dark">-->
-<!--                <p style="height:10%">grtsgtrs</p>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div class="container">
+        <div class="row">
+            <div class="col card bg-dark my-4 me-4 px-5">
+                <div class="text-center my-4">
+                    <h3 class="mb-4" >Balance</h3>
+                    <h5 th:text="${currBalance} + '  ETH'" style="white-space: pre"></h5>
+                </div>
+            </div>
+            <div class="col card bg-dark my-4 ms-4 px-5">
+                <div class="text-center my-4">
+                    <h3 class="mb-4" >Historical Balance</h3>
+                    <div class="input-group">
+                        <input type="date" class="form-control bg-secondary" aria-describedby="dateSubmitBtn" id="dateInput">
+                        <button class="btn btn-outline-warning" type="button" id="dateSubmitBtn"
+                                th:onclick="'getBalanceAtDate()'">
+                            Get Balance
+                        </button>
+                    </div>
+                    <div class="text-center mt-4">
+                        <div class="spinner-border" role="status" id="Balancespinner" style="display: none">
+                            <span class="sr-only"></span>
+                        </div>
+                        <h5 id="apiBalanceResponse" style="white-space: pre"></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <div class="m-5">
+    <div class="m-4">
         <table class="table table-hover" style="vertical-align:middle">
             <tr class="table-dark">
                 <th:block th:each="header : ${ {'#', 'Txn Hash', 'Block', 'Date Time (UTC)', 'From', '', 'To', 'Value', 'Txn Fee'} }">
@@ -40,7 +63,7 @@
                     <!-- 'From' Column -->
                     <td style="max-width:35ch; overflow: hidden; text-overflow: ellipsis">
                         <span th:if="${#strings.equalsIgnoreCase(txn.from, thisAddress)}" th:text="${#strings.substring(thisAddress, 0, 20) + '...'}"></span>
-                        <a th:if="${not #strings.equalsIgnoreCase(txn.from, thisAddress)}" th:text="${txn.from}" th:href="@{/transactions/} + ${txn.from}"></a>
+                        <a th:if="${not #strings.equalsIgnoreCase(txn.from, thisAddress)}" th:text="${txn.from}" th:href="@{/address/} + ${txn.from}"></a>
                     </td>
 
                     <!-- Direction indicator Column -->
@@ -57,11 +80,11 @@
                         <span th:if="${txn.contractInteraction or txn.contractCreated}">&#128462</span>
                         <block th:if="${txn.contractCreated}">
                             <span th:if="${#strings.equalsIgnoreCase(txn.to, thisAddress)}">Contract Creation</span>
-                            <a th:if="${not #strings.equalsIgnoreCase(txn.to, thisAddress)}" th:href="@{/transactions/} + ${txn.to}">Contract Creation</a>
+                            <a th:if="${not #strings.equalsIgnoreCase(txn.to, thisAddress)}" th:href="@{/address/} + ${txn.to}">Contract Creation</a>
                         </block>
                         <block th:unless="${txn.contractCreated}">
                             <span th:if="${#strings.equalsIgnoreCase(txn.to, thisAddress)}" th:text="${#strings.substring(thisAddress, 0, 20) + '...'}"></span>
-                            <a th:if="${not #strings.equalsIgnoreCase(txn.to, thisAddress)}" th:text="${txn.to}" th:href="@{/transactions/} + ${txn.to}" ></a>
+                            <a th:if="${not #strings.equalsIgnoreCase(txn.to, thisAddress)}" th:text="${txn.to}" th:href="@{/address/} + ${txn.to}" ></a>
                         </block>
                     </td>
 

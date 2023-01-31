@@ -7,17 +7,6 @@
     <h1 class="text-center mb-5">Transaction</h1>
     <h3 class="text-center" th:text="${thisHash}"></h3>
 
-    <!--    <div class="container">-->
-    <!--        <div class="row m-5 gx-5">-->
-    <!--            <div class="col card bg-dark">-->
-    <!--                <p style="height:10%">Balance</p>-->
-    <!--            </div>-->
-    <!--            <div class="col card bg-dark">-->
-    <!--                <p style="height:10%">grtsgtrs</p>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-
     <div class="m-5">
         <table class="table table-hover" style="vertical-align:middle">
             <th:block th:each="name : ${txn}">
@@ -32,11 +21,6 @@
                                 class="form-control bg-dark btn btn-outline-secondary text-warning"
                                 style="text-align: left"></textarea>
                         </div>
-<!--                        <th:block th:if="${#strings.equalsIgnoreCase(name.key, 'Input')}">-->
-<!--                            <div class="form-group">-->
-<!--                                <textarea class="form-control" id="exampleTextarea" rows="1" style="height: 163px; line-height: 22.5px;" data-lt-tmp-id="lt-579989" spellcheck="false" data-gramm="false"></textarea>-->
-<!--                            </div>-->
-<!--                        </th:block>-->
                     </td>
                 </tr>
             </th:block>

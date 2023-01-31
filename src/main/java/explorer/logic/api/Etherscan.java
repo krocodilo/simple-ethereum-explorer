@@ -35,7 +35,14 @@ public class Etherscan {
                 String.format(baseURL, unixtime.toString())
         );
 
-        return new BigInteger(resp);
+        BigInteger blocknum;
+        try{
+            blocknum = new BigInteger(resp);
+        } catch (NumberFormatException e){
+            throw new HttpsConnection.APIException("API was unable to find closest block to that date.");
+        }
+
+        return blocknum;
     }
 
     /**

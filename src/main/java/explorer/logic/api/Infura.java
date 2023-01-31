@@ -1,6 +1,7 @@
 package explorer.logic.api;
 
 import explorer.logic.utils.HttpsConnection;
+import explorer.logic.utils.Utils;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.methods.response.Transaction;
@@ -44,7 +45,7 @@ public class Infura {
             throw new HttpsConnection.ConnectionException("Error in API call to provider Infura.", e);
         }
 
-        return Convert.fromWei(wei.toString(), Convert.Unit.ETHER);
+        return Utils.fromWeiToETH(wei.toString());
     }
 
     public Transaction getTransactionInfo(String txnHash) throws HttpsConnection.ConnectionException, HttpsConnection.APIException {
