@@ -2,9 +2,7 @@ package explorer.logic.webcontrollers;
 
 import explorer.logic.Explorer;
 import explorer.logic.models.Transaction;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -12,8 +10,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 @Controller
-@RequestMapping("/transactions")
-public class TransactionsController {
+@RequestMapping("/address")
+public class AddressController {
 
     final int pagesize = 50;
     Explorer eth = null;
@@ -22,7 +20,7 @@ public class TransactionsController {
     public String transactionsPOST(
             @RequestParam String address) {
         // Receives the POST request from the Homepage form
-        return "redirect:/transactions/" + address;
+        return "redirect:/address/" + address;
     }
 
     @GetMapping("/{address}")
@@ -32,7 +30,7 @@ public class TransactionsController {
             @RequestParam(name="page", required=false, defaultValue="1") String page
     ) throws Exception {
 
-        ModelAndView mav = new ModelAndView("transactions");      // transactions.html
+        ModelAndView mav = new ModelAndView("address");      // address.html
 
         long pag;
         BigInteger block;
@@ -63,7 +61,7 @@ public class TransactionsController {
         mav.addObject("transactions", txns.toArray());     // Send array to the View, with the name of "transactions"
         mav.addObject("thisAddress", eth.getAddress());
 
-        mav.addObject("pagetitle", address + " transactions");
+        mav.addObject("pagetitle", address);
 
 
         return mav;
