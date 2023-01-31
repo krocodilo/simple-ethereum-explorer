@@ -2,9 +2,11 @@ package explorer.logic.webcontrollers;
 
 import explorer.logic.Explorer;
 import explorer.logic.models.Transaction;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -13,9 +15,8 @@ import java.util.ArrayList;
 @RequestMapping("/transactions")
 public class TransactionsController {
 
-    String address = "";
     final int pagesize = 50;
-    Explorer eth;
+    Explorer eth = null;
 
     @PostMapping
     public String transactionsPOST(
@@ -25,38 +26,46 @@ public class TransactionsController {
     }
 
     @GetMapping("/{address}")
-    public String transactionsGET(
+    public ModelAndView transactionsGET(
             @PathVariable String address,
-            @RequestParam(name="sinceBlock", required=false, defaultValue="0") String block,
-            @RequestParam(name="page", required=false, defaultValue="1") String page,
-            Model model ) throws Exception {
+            @RequestParam(name="sinceBlock", required=false, defaultValue="0") String bl,
+            @RequestParam(name="page", required=false, defaultValue="1") String page
+    ) throws Exception {
 
-        long pag = 1;
-        BigInteger bl;
+        ModelAndView mav = new ModelAndView("transactions");      // transactions.html
+
+        long pag;
+        BigInteger block;
+
+        // Validate page number
         try{
-            Long.parseLong(page);
-            bl = new BigInteger(block);
+            pag = Long.parseLong(page);
+        } catch (Exception e) { throw new Exception("Invalid page number.", e); }
 
-            if (this.address.compareToIgnoreCase(address) != 0){
-                // If looking up a different address
-                this.address = address;
+        // Validate block number
+        try{
+            block = new BigInteger(bl);
+        } catch (Exception e) { throw new Exception("Invalid block number.", e); }
 
-                eth = new Explorer(address);
 
-            }
-            ArrayList<Transaction> txns = new ArrayList<>(
+        // If looking up a different address, or if its the first address
+        try{
+            if (eth == null || eth.getAddress().compareToIgnoreCase(address) != 0)
+                eth = new Explorer(address);   // todo - add ability to save multiple in "cache"
+        } catch (Exception e) { throw new Exception("Invalid address.", e); }
+
+
+        ArrayList<Transaction> txns = new ArrayList<>(
 //                    eth.getPageOfTransactions(bl, pagesize, pag)
-                    eth.getTxnsSinceBlock(bl)
-            );
+                eth.getTxnsSinceBlock(block)
+        );
 
-            model.addAttribute("transactions", txns.toArray());     // Send array to the View, with the name of "transactions"
-            model.addAttribute("thisAddress", eth.getAddress());
+        mav.addObject("transactions", txns.toArray());     // Send array to the View, with the name of "transactions"
+        mav.addObject("thisAddress", eth.getAddress());
 
-            model.addAttribute("pagetitle", address + " transactions");
+        mav.addObject("pagetitle", address + " transactions");
 
-        } catch (Exception e) {
-            throw e;    // Todo create error page
-        }
-        return "transactions";  // Returns view transactions.html
+
+        return mav;
     }
 }

@@ -11,7 +11,9 @@ import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.ParseException;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Etherscan {
 
@@ -23,18 +25,12 @@ public class Etherscan {
      * Finds the number of the first block that was mined in that day
      * @param date - String in format "YYYY-MM-DD"
      * @return Block Number
-     * @throws ParseException
-     * @throws HttpsConnection.ConnectionException
-     * @throws HttpsConnection.APIException
+     * @throws Exception
      */
-    public static BigInteger getBlockNumByTimestamp(String date) throws ParseException, HttpsConnection.ConnectionException, HttpsConnection.APIException {
+    public static BigInteger getBlockNumByTimestamp(BigInteger unixtime) throws Exception {
 
         String baseURL = ethercanApiStart +
                 "?module=block&action=getblocknobytime&timestamp=%s&closest=after&apikey=" + etherscanApiKey;
-
-        BigInteger unixtime = Utils.getUnixTimeFromDate(
-                Utils.parseDate(date)   //TODO date must be in the past
-        );
 
         // Request Etherscan for block number at specified date
         String resp = (String) HttpsConnection.callAPI(
@@ -66,9 +62,14 @@ public class Etherscan {
             numTxnsReceived = 0;
 
             // 10k transactions = approx. 14 MB downloaded
-            JSONArray resp = (JSONArray) HttpsConnection.callAPI(
-                    String.format(baseURL, address, firstBlock.toString())
-            );
+            JSONArray resp = null;
+            try {
+                resp = (JSONArray) HttpsConnection.callAPI(
+                        String.format(baseURL, address, firstBlock.toString())
+                );
+            } catch (Exception e) {
+                e.printStackTrace();    // TODO
+            }
 
             for(Object obj : resp){
                 JSONObject j = (JSONObject) obj;

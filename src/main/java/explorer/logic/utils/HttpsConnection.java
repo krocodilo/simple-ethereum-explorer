@@ -15,15 +15,12 @@ public class HttpsConnection {
      */
 
     public static class ConnectionException extends Exception {
-        public ConnectionException(Throwable cause) {
-            super(cause);
+        public ConnectionException(String message, Throwable cause) {
+            super(message, cause);
         }
     }
 
     public static class APIException extends Exception {
-        public APIException(Throwable cause) {
-            super(cause);
-        }
         public APIException(String message) {
             super(message);
         }
@@ -32,24 +29,28 @@ public class HttpsConnection {
     /**
      * Execute an API call and return the data in JSON format
      * @param url
-     * @return JSON data
-     * @throws JSONException
-     * @throws ConnectionException
-     * @throws APIException
+     * @return JSON data - might be a String, JSONArray, integer, etc... Depends on the request
+     * @throws Exception
      */
-    public static Object callAPI(String url) throws JSONException, ConnectionException, APIException {
+    public static Object callAPI(String url) throws Exception {
 
         String resp;
         try{
             resp = httpsCall(url);
-        } catch (Exception e){
-            throw new ConnectionException(e);
+        } catch (IOException e){
+            throw new ConnectionException("Error in API call.", e);
         }
 
-        JSONObject j = new JSONObject(resp);
+        JSONObject j;
+        try{
+            j = new JSONObject(resp);
+        } catch (JSONException e){
+            throw new ConnectionException("Error reading response from API.", e);
+        }
 
         if(j.getInt("status") == 0) {
-            throw new APIException( j.get("message").toString() + "\n" + j.get("result").toString() );
+            throw new APIException( "Error from API -  " +
+                    j.get("message").toString() + "\n" + j.get("result").toString() );
         }
 
         return j.get("result");     // might be a String, JSONArray, integer, etc... Depends on the request

@@ -12,7 +12,7 @@ public class Utils {
      * Read date from a string, following the pattern: YYYY-MM-DD
      * @param str String to be parsed
      * @return Date object
-     * @throws ParseException
+     * @throws ParseException - if unable to parse date from string
      */
     public static Date parseDate(String str) throws ParseException {
 

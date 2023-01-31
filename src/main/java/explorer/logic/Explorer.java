@@ -3,11 +3,13 @@ package explorer.logic;
 import explorer.logic.api.*;
 import explorer.logic.models.Transaction;
 import explorer.logic.utils.HttpsConnection;
+import explorer.logic.utils.Utils;
 import org.web3j.crypto.WalletUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,17 +34,40 @@ public class Explorer {
         return WalletUtils.isValidAddress(address);
     }
 
+    /**
+     *
+     * @param address
+     * @param date - if null or empty, will use current date and time
+     * @return
+     * @throws Exception
+     */
     public static BigDecimal getBalance(String address, String date) throws Exception {
 
-        if( ! isValidAddress(address) )
-            throw new Exception("Address is invalid.");
-
-        BigInteger block = Etherscan.getBlockNumByTimestamp(date);
-
         Infura infura = new Infura();
+        BigInteger unixtime;
+
+        if( date == null || date.isBlank() )
+            // If unspecified date, get current balance
+            return infura.getBalance(address, null);
+
+
+        // Parse date string into unix time
+        try{
+            unixtime = Utils.getUnixTimeFromDate( Utils.parseDate(date) );
+        } catch (ParseException e) {
+            throw new Exception("Invalid date format.", e);
+        }
+
+        // Validate if date is in the past
+        if( unixtime.compareTo(BigInteger.valueOf( Instant.now().getEpochSecond() )) > 0) {
+            throw new Exception("The specified date must be in the past.");
+        }
+
+        BigInteger block = Etherscan.getBlockNumByTimestamp(unixtime);
 
         return infura.getBalance(address, block);
     }
+
 
     public String getAddress() {
         return address;

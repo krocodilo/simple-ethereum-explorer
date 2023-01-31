@@ -4,6 +4,7 @@ import explorer.logic.Explorer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/balance")
@@ -13,23 +14,30 @@ public class BalanceController {
     @PostMapping
     public String balancePOST(
             @RequestParam String address,
-            @RequestParam String date) {
+            @RequestParam String date
+    ) {
         // Receives the POST request from the Homepage form
         return "redirect:/balance/" + address + "?date=" + date;
     }
 
     @GetMapping({"/{address}"})
-    public String getBalanceAtDate(
+    public ModelAndView getBalanceAtDate(
             @PathVariable String address,
-            @RequestParam(name="date", required=false, defaultValue="2022-12-01") String date,
-            Model model ) throws Exception {
+            @RequestParam(name="date", required=false) String date
+    ) throws Exception {
 
-        model.addAttribute("balance",
-                Explorer.getBalance(address, "2022-12-01") + " ETH"
+        ModelAndView mav = new ModelAndView("balance"); // balance.html
+
+        // Validate address
+        if( ! Explorer.isValidAddress(address) )
+            throw new Exception("Invalid address.");
+
+        mav.addObject("balance",
+                Explorer.getBalance(address, date) + " ETH"
         );
 
-        model.addAttribute("pagetitle", address + " balance");
+        mav.addObject("pagetitle", address + " balance");
 
-        return "balance";  // Returns view balance.html
+        return mav;  // Returns view balance.html
     }
 }

@@ -37,11 +37,11 @@ public class Infura {
         EthGetBalance apiresp = null;
         BigInteger wei;
         try {
-            apiresp = infuraAPI.ethGetBalance(address, DefaultBlockParameter.valueOf(block))
+            apiresp = infuraAPI.ethGetBalance(address, block == null ? DefaultBlockParameter.valueOf("latest") : DefaultBlockParameter.valueOf(block))
                     .send();
             wei = apiresp.getBalance();
-        } catch (Exception e){
-            throw new HttpsConnection.ConnectionException(e);
+        } catch (IOException e){
+            throw new HttpsConnection.ConnectionException("Error in API call to provider Infura.", e);
         }
 
         return Convert.fromWei(wei.toString(), Convert.Unit.ETHER);

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: htmlhead"></head>
+<body>
+    <div th:replace="layout :: navbar"></div>
+
+    <div class="text-center">
+        <h1>Error</h1>
+
+        <h3 th:text="${errorMessage}"></h3>
+    </div>
+
+    <div hidden>
+        <!-- For debugging -->
+
+        <p th:text="'Failed URL: ' + ${url}"></p>
+        <p th:text="'Exception: ' + ${errorMessage}"></p>
+        <p th:text="'Stack Trace: ' + ${stackTrace}"></p>
+    </div>
+
+
+    <div th:replace="layout :: footer"></div>
+</body>
+</html>
