@@ -1,7 +1,7 @@
 package explorer.logic.webcontrollers;
 
 import explorer.logic.Explorer;
-import explorer.logic.models.Transaction;
+import explorer.logic.data.Txn;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -53,7 +53,7 @@ public class AddressController {
         } catch (Exception e) { throw new Exception("Invalid address.", e); }
 
 
-        ArrayList<Transaction> txns = new ArrayList<>(
+        ArrayList<Txn> txns = new ArrayList<>(
 //                    eth.getPageOfTransactions(bl, pagesize, pag)
                 eth.getTxnsSinceBlock(block)
         );

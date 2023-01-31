@@ -1,6 +1,6 @@
 package explorer.logic.api;
 
-import explorer.logic.models.Transaction;
+import explorer.logic.data.Txn;
 import explorer.logic.utils.HttpsConnection;
 import explorer.logic.utils.Utils;
 import org.json.JSONArray;
@@ -8,12 +8,8 @@ import org.json.JSONObject;
 import org.web3j.utils.Convert;
 
 import java.math.BigInteger;
-import java.math.MathContext;
 import java.math.RoundingMode;
-import java.text.ParseException;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Etherscan {
 
@@ -23,7 +19,7 @@ public class Etherscan {
 
     /**
      * Finds the number of the first block that was mined in that day
-     * @param date - String in format "YYYY-MM-DD"
+     * @param unixtime - Unix Time
      * @return Block Number
      * @throws Exception
      */
@@ -44,16 +40,16 @@ public class Etherscan {
      * Fetches a list of transactions of an address posted on the blockchain after a certain block
      * @param address
      * @param startBlock - A block from where to start (including itself)
-     * @return ArrayList of Transaction objects
+     * @return ArrayList of Txn objects
      * @throws HttpsConnection.APIException
      * @throws HttpsConnection.ConnectionException
      */
-    public static ArrayList<Transaction> getTxnsSinceBlock(String address, BigInteger startBlock) throws HttpsConnection.APIException, HttpsConnection.ConnectionException {
+    public static ArrayList<Txn> getTxnsSinceBlock(String address, BigInteger startBlock) throws HttpsConnection.APIException, HttpsConnection.ConnectionException {
 
         String baseURL = ethercanApiStart +
                 "?module=account&action=txlist&address=%s&startblock=%s&endblock=9999999999999&sort=asc&apikey=" + etherscanApiKey;
 
-        ArrayList<Transaction> txns = new ArrayList<>();
+        ArrayList<Txn> txns = new ArrayList<>();
 
         int numTxnsReceived;
         BigInteger firstBlock = startBlock;
@@ -77,7 +73,7 @@ public class Etherscan {
                 String txnFee = new BigInteger(j.getString("gasUsed")).multiply(new BigInteger(j.getString("gasPrice"))).toString();
 
                 // Save JSON data to a transaction object
-                txns.add( new Transaction(
+                txns.add( new Txn(
                         j.getString("blockNumber"),
                         j.getString("hash"),
                         Utils.getDateFromUnixTime( Long.parseLong(j.getString("timeStamp")) ),

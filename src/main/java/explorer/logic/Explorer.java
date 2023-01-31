@@ -1,7 +1,7 @@
 package explorer.logic;
 
 import explorer.logic.api.*;
-import explorer.logic.models.Transaction;
+import explorer.logic.data.Txn;
 import explorer.logic.utils.HttpsConnection;
 import explorer.logic.utils.Utils;
 import org.web3j.crypto.WalletUtils;
@@ -11,7 +11,9 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Explorer {
 
@@ -20,7 +22,7 @@ public class Explorer {
      */
 
     private final String address;
-    private final ArrayList<Transaction> transactions = new ArrayList<>();
+    private final ArrayList<Txn> transactions = new ArrayList<>();
 
 
     public Explorer(String address) throws Exception {
@@ -73,7 +75,7 @@ public class Explorer {
         return address;
     }
 
-    public List<Transaction> getPageOfTransactions(BigInteger block, int pagesize, long page) throws HttpsConnection.APIException, HttpsConnection.ConnectionException {
+    public List<Txn> getPageOfTransactions(BigInteger block, int pagesize, long page) throws HttpsConnection.APIException, HttpsConnection.ConnectionException {
 
         // Update txns list
         if( transactions.isEmpty()) // Todo - temporary. If not empty, must update
@@ -105,7 +107,21 @@ public class Explorer {
     }
 
     // Temp
-    public ArrayList<Transaction> getTxnsSinceBlock(BigInteger block) throws HttpsConnection.APIException, HttpsConnection.ConnectionException {
+    public ArrayList<Txn> getTxnsSinceBlock(BigInteger block) throws HttpsConnection.APIException, HttpsConnection.ConnectionException {
         return Etherscan.getTxnsSinceBlock(address, block);
+    }
+
+
+
+
+    public static Map<String, String> getTransactionInfo(String txnHash) {
+
+        Infura infura = new Infura();
+
+
+
+        HashMap<String, String> map = new HashMap<>();
+
+        return map;
     }
 }
