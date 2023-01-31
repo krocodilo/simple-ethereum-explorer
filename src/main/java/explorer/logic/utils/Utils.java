@@ -29,7 +29,7 @@ public class Utils {
 
     /**
      * Converts Date object to Unix/Epoch Time in seconds
-     * @param date
+     * @param date Date object to convert
      * @return Unix Time as a BigInteger
      */
     public static BigInteger getUnixTimeFromDate(Date date) {
@@ -38,7 +38,7 @@ public class Utils {
 
     /**
      * Converts Unix Time to date and time formatted as: "yyyy-MM-dd HH:mm:ss"
-     * @param timestamp
+     * @param timestamp Long number
      * @return Formatted date
      */
     public static String getDateFromUnixTime(long timestamp) {
@@ -51,7 +51,7 @@ public class Utils {
 
     /**
      * Convert Wei units to ETH units
-     * @param wei
+     * @param wei Wei amount
      * @return BigDecimal value of ETH
      */
     public static BigDecimal fromWeiToETH(String wei) {

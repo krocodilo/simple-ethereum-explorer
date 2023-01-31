@@ -1,23 +1,21 @@
 package explorer.logic.webcontrollers;
 
 import explorer.logic.Explorer;
+import org.json.JSONObject;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/balance")
 public class BalanceRestController {
 
-    @GetMapping({"/{address}"})
+    @GetMapping(value = "/{address}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getBalance( @PathVariable String address ) throws Exception {
-
-        // Validate address
-        if( ! Explorer.isValidAddress(address) )
-            throw new Exception("Invalid address.");
 
         return getBalanceAtDate(address, null);
     }
 
-    @GetMapping({"/{address}/{date}"})
+    @GetMapping(value = "/{address}/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getBalanceAtDate(
             @PathVariable String address,
             @PathVariable String date
@@ -38,6 +36,8 @@ public class BalanceRestController {
             e.printStackTrace();
         }
 
-        return "{\"resp\":\"" + resp + "\"}";
+        JSONObject j = new JSONObject().put("resp", resp);
+
+        return j.toString();
     }
 }

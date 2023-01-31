@@ -5,10 +5,12 @@
     <div th:replace="layout :: navbar"></div>
 
 
+    <h1 class="text-center text-muted m-5">Welcome!</h1>
+
     <div class="container card bg-dark p-5" style="width:50%; height:40%;">
 
         <form class="form-group" method="post">
-            <div class="row mb-5">
+            <div class="row my-4">
                 <div class="col">
                     <div class="form-floating">
                         <input type="text" class="form-control form-control-lg bg-secondary" id="floatingAddress"
@@ -22,7 +24,7 @@
                 <div class="col">
                     <div class="form-floating">
                         <input type="number" class="form-control form-control-lg bg-secondary"
-                               id="floatingBlock" name="block" value="0" min="0">
+                               id="floatingBlock" name="sinceBlock" value="0" min="0">
                         <label for="floatingBlock" class="text-dark">Starting block (Default = 0)</label>
                     </div>
                 </div>

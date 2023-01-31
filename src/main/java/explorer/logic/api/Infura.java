@@ -6,7 +6,6 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.utils.Convert;
 
 import java.io.IOException;
 import java.math.BigDecimal;

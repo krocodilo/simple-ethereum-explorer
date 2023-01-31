@@ -23,3 +23,19 @@ If a user requests to view transactions associated with the address `0xaa7a9ca87
 - Given a date in `YYYY-MM-DD` format, the program should return the exact value of ETH that was available on the given address at YYYY-MM-DD 00:00 UTC time.
 
 - Do the same task above to include tokens amounts (other than ETH)
+
+---
+
+## -> My Solution
+#### Technologies Used
+- Java, using the Spring Boot framework for the creation and management of webservices.
+- Thymeleaf, for rendering of variables and programming logic in the web service's Views.
+- Javascript, for fetching information from a REST API created using Spring Boot.
+
+- Infura API, to get the historical balance of an address at a specific timestamp/block
+- Etherscan API
+
+#### Mechanics / Logic
+
+
+#### Instructions

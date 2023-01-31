@@ -28,9 +28,9 @@ public class HttpsConnection {
 
     /**
      * Execute an API call and return the data in JSON format
-     * @param url
+     * @param url String containing the URL
      * @return JSON data - might be a String, JSONArray, integer, etc... Depends on the request
-     * @throws Exception
+     * @throws Exception with a message
      */
     public static Object callAPI(String url) throws Exception {
 
@@ -58,9 +58,9 @@ public class HttpsConnection {
 
     /**
      * Executes an HTTPS request and returns raw data
-     * @param url
+     * @param url String containing the URL
      * @return raw data
-     * @throws IOException
+     * @throws IOException If an error occurs attempting to, or during the connection
      */
     private static String httpsCall(String url) throws IOException{
 

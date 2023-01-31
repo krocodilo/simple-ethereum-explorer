@@ -2,18 +2,15 @@ package explorer.logic;
 
 import explorer.logic.api.*;
 import explorer.logic.data.Txn;
-import explorer.logic.utils.HttpsConnection;
 import explorer.logic.utils.Utils;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.core.methods.response.Transaction;
-import org.web3j.utils.Convert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +19,7 @@ import static explorer.logic.utils.Utils.fromWeiToETH;
 public class Explorer {
 
     /**
-     * Receives and delegates requests from the UI
+     * Receives and delegates requests from the frontend (controllers)
      */
 
     private final String address;
@@ -36,16 +33,20 @@ public class Explorer {
         this.address = address;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     public static boolean isValidAddress(String address) {
         return WalletUtils.isValidAddress(address);
     }
 
     /**
      *
-     * @param address
+     * @param address String containing the address
      * @param date if null or empty, will use current date and time
-     * @return
-     * @throws Exception
+     * @return balance
+     * @throws Exception with a message
      */
     public static BigDecimal getBalance(String address, String date) throws Exception {
 
@@ -64,10 +65,13 @@ public class Explorer {
             throw new Exception("Invalid date format.", e);
         }
 
+        // Must not be older than the first Ethereum block
+        if( unixtime.compareTo(BigInteger.valueOf( 1438214400 )) < 0)
+            throw new Exception("There are no blocks at that date.");
+
         // Validate if date is in the past
-        if( unixtime.compareTo(BigInteger.valueOf( Instant.now().getEpochSecond() )) > 0) {
+        if( unixtime.compareTo(BigInteger.valueOf( Instant.now().getEpochSecond() )) > 0)
             throw new Exception("The specified date must be in the past.");
-        }
 
         BigInteger block = Etherscan.getBlockNumByTimestamp(unixtime);
 
@@ -75,11 +79,7 @@ public class Explorer {
     }
 
 
-    public String getAddress() {
-        return address;
-    }
-
-    public List<Txn> getPageOfTransactions(BigInteger block, int pagesize, long page) throws HttpsConnection.APIException, HttpsConnection.ConnectionException {
+    public List<Txn> getPageOfTransactions(BigInteger block, int pagesize, long page) {
 
         // Update txns list
         if( transactions.isEmpty()) // Todo - temporary. If not empty, must update
@@ -99,23 +99,19 @@ public class Explorer {
         return transactions.subList( firstElem, lastElem );
     }
 
-    public void fetchTransactionsSinceBlock(BigInteger block) throws HttpsConnection.APIException, HttpsConnection.ConnectionException {
+    public void fetchTransactionsSinceBlock(BigInteger block) {
+        // fetch transactions or update the list saved locally
 
-//        if( new BigInteger( transactions.get(0).blockNumber() ).compareTo( block ) > 0){
+//        if( new BigInteger( transactions.get(0).blockNumber() ).compareTo( block ) > 0)
 //            // If 'block' is lower than the earliest block in the list
-//
-//
-//        }
 
         transactions.addAll( Etherscan.getTxnsSinceBlock(address, block) );
     }
 
-    // Temp
-    public ArrayList<Txn> getTxnsSinceBlock(BigInteger block) throws HttpsConnection.APIException, HttpsConnection.ConnectionException {
+
+    public ArrayList<Txn> getTxnsSinceBlock(BigInteger block) {
         return Etherscan.getTxnsSinceBlock(address, block);
     }
-
-
 
 
     public static Map<String, String> getTransactionInfo(String txnHash) throws Exception {

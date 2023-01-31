@@ -5,10 +5,8 @@ import explorer.logic.utils.HttpsConnection;
 import explorer.logic.utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.web3j.utils.Convert;
 
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import static explorer.logic.utils.Utils.fromWeiToETH;
@@ -21,9 +19,9 @@ public class Etherscan {
 
     /**
      * Finds the number of the first block that was mined in that day
-     * @param unixtime - Unix Time
+     * @param unixtime Unix Time
      * @return Block Number
-     * @throws Exception
+     * @throws Exception with a message
      */
     public static BigInteger getBlockNumByTimestamp(BigInteger unixtime) throws Exception {
 
@@ -47,13 +45,11 @@ public class Etherscan {
 
     /**
      * Fetches a list of transactions of an address posted on the blockchain after a certain block
-     * @param address
+     * @param address String containing the address
      * @param startBlock - A block from where to start (including itself)
      * @return ArrayList of Txn objects
-     * @throws HttpsConnection.APIException
-     * @throws HttpsConnection.ConnectionException
      */
-    public static ArrayList<Txn> getTxnsSinceBlock(String address, BigInteger startBlock) throws HttpsConnection.APIException, HttpsConnection.ConnectionException {
+    public static ArrayList<Txn> getTxnsSinceBlock(String address, BigInteger startBlock) {
 
         String baseURL = ethercanApiStart +
                 "?module=account&action=txlist&address=%s&startblock=%s&endblock=9999999999999&sort=asc&apikey=" + etherscanApiKey;
@@ -76,6 +72,7 @@ public class Etherscan {
                 e.printStackTrace();    // TODO
             }
 
+            assert resp != null;
             for(Object obj : resp){
                 JSONObject j = (JSONObject) obj;
 

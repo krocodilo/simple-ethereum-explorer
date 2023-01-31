@@ -18,7 +18,7 @@ public class ExceptionHandlingController {
         err.addObject("errorMessage", e.getMessage());
         StackTraceElement[] st = e.getStackTrace();
 
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sb = new StringBuilder();
         for(StackTraceElement s : st)
             sb.append(s.toString()).append("\n");
 
