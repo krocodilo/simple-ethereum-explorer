@@ -28,6 +28,7 @@ If a user requests to view transactions associated with the address `0xaa7a9ca87
 
 ## -> My Solution
 #### Technologies Used
+- IntelliJ IDEA as the IDE
 - Java, using the Spring Boot framework for the creation and management of webservices.
   - Web3j library. 
 - Thymeleaf, for rendering of variables and programming logic in the web service's Views (I used Spring MVC (Model-View-Controller)).
@@ -46,3 +47,7 @@ If a user requests to view transactions associated with the address `0xaa7a9ca87
 
 
 #### Instructions
+- `java -version` make sure you use the binaries of Java 17 or more recent
+- `java -jar <filename>`
+- Access to `localhost:8080` on your browser
+- Ctrl+C - to exit

@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout :: htmlhead"></head>
+<head th:replace="~{layout :: htmlhead}"></head>
 <body>
-    <div th:replace="layout :: navbar"></div>
+    <div th:replace="~{layout :: navbar}"></div>
 
     <h2 class="text-center"><strong>Transaction</strong></h2>
     <h3 class="text-center mt-3 mb-5" th:text="${thisHash}"></h3>
@@ -27,6 +27,6 @@
         </table>
     </div>
 
-    <div th:replace="layout :: footer"></div>
+    <div th:replace="~{layout :: footer}"></div>
 </body>
 </html>

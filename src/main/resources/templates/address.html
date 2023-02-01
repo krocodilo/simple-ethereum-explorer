@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout :: htmlhead"></head>
+<head th:replace="~{layout :: htmlhead}"></head>
 <body>
     <script src="/js/getBalance.js"></script>
     <script>
         const thisAddress = "[[${thisAddress}]]";
     </script>
 
-    <div th:replace="layout :: navbar"></div>
+    <div th:replace="~{layout :: navbar}"></div>
 
     <h2 class="text-center"><strong>Address</strong></h2>
     <h3 class="text-center mt-3 mb-5" th:text="${thisAddress}"></h3>
@@ -102,6 +102,6 @@
 
 
 
-    <div th:replace="layout :: footer"></div>
+    <div th:replace="~{layout :: footer}"></div>
 </body>
 </html>
