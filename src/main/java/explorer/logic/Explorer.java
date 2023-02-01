@@ -79,7 +79,7 @@ public class Explorer {
     }
 
 
-    public List<Txn> getPageOfTransactions(BigInteger block, int pagesize, long page) {
+    public List<Txn> getPageOfTransactions(BigInteger block, int pagesize, long page) throws Exception {
 
         // Update txns list
         if( transactions.isEmpty()) // Todo - temporary. If not empty, must update
@@ -99,7 +99,7 @@ public class Explorer {
         return transactions.subList( firstElem, lastElem );
     }
 
-    public void fetchTransactionsSinceBlock(BigInteger block) {
+    public void fetchTransactionsSinceBlock(BigInteger block) throws Exception {
         // fetch transactions or update the list saved locally
 
 //        if( new BigInteger( transactions.get(0).blockNumber() ).compareTo( block ) > 0)
@@ -109,7 +109,7 @@ public class Explorer {
     }
 
 
-    public ArrayList<Txn> getTxnsSinceBlock(BigInteger block) {
+    public ArrayList<Txn> getTxnsSinceBlock(BigInteger block) throws Exception {
         return Etherscan.getTxnsSinceBlock(address, block);
     }
 

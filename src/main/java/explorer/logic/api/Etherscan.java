@@ -48,8 +48,9 @@ public class Etherscan {
      * @param address String containing the address
      * @param startBlock - A block from where to start (including itself)
      * @return ArrayList of Txn objects
+     * @throws Exception with a message
      */
-    public static ArrayList<Txn> getTxnsSinceBlock(String address, BigInteger startBlock) {
+    public static ArrayList<Txn> getTxnsSinceBlock(String address, BigInteger startBlock) throws Exception {
 
         String baseURL = ethercanApiStart +
                 "?module=account&action=txlist&address=%s&startblock=%s&endblock=9999999999999&sort=asc&apikey=" + etherscanApiKey;
@@ -63,16 +64,10 @@ public class Etherscan {
             numTxnsReceived = 0;
 
             // 10k transactions = approx. 14 MB downloaded
-            JSONArray resp = null;
-            try {
-                resp = (JSONArray) HttpsConnection.callAPI(
-                        String.format(baseURL, address, firstBlock.toString())
-                );
-            } catch (Exception e) {
-                e.printStackTrace();    // TODO
-            }
+            JSONArray resp = (JSONArray) HttpsConnection.callAPI(
+                    String.format(baseURL, address, firstBlock.toString())
+            );
 
-            assert resp != null;
             for(Object obj : resp){
                 JSONObject j = (JSONObject) obj;
 
