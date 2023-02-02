@@ -5,6 +5,9 @@ import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * REST server endpoint configuration
+ */
 @RestController
 @RequestMapping("/balance")
 public class BalanceRestController {

@@ -35,6 +35,13 @@ public class Infura {
         }
     }
 
+    /**
+     * Gets the ETH balance on a given block, or the current balance
+     * @param address String containing the address
+     * @param block Block Number. If null, gets the current balance
+     * @return BigDecimal ETH amount
+     * @throws HttpsConnection.ConnectionException with a message. In case of communication error.
+     */
     public BigDecimal getBalance(String address, BigInteger block) throws HttpsConnection.ConnectionException {
         BigInteger wei;
         try {
@@ -47,6 +54,13 @@ public class Infura {
         return Utils.fromWeiToETH(wei.toString());
     }
 
+    /**
+     * Gets all information about a given transaction
+     * @param txnHash String with the transaction hash
+     * @return Transaction object
+     * @throws HttpsConnection.ConnectionException with a message. In case of communication error.
+     * @throws HttpsConnection.APIException with a message. In case the API reply is empty.
+     */
     public Transaction getTransactionInfo(String txnHash) throws HttpsConnection.ConnectionException, HttpsConnection.APIException {
         Optional<Transaction> resp;
         try {

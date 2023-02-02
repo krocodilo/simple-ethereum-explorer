@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * Serves the subdirectory /transaction/
+ */
 @Controller
 @RequestMapping("/transaction")
 public class TransactionController {

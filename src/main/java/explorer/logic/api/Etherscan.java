@@ -21,7 +21,7 @@ public class Etherscan {
      * Finds the number of the first block that was mined in that day
      * @param unixtime Unix Time
      * @return Block Number
-     * @throws Exception with a message
+     * @throws Exception with a message. Happens if unable to read a number from the API response
      */
     public static BigInteger getBlockNumByTimestamp(BigInteger unixtime) throws Exception {
 
@@ -48,7 +48,7 @@ public class Etherscan {
      * @param address String containing the address
      * @param startBlock - A block from where to start (including itself)
      * @return ArrayList of Txn objects
-     * @throws Exception with a message
+     * @throws Exception with a message. In case of issues with the API
      */
     public static ArrayList<Txn> getTxnsSinceBlock(String address, BigInteger startBlock) throws Exception {
 
@@ -63,7 +63,6 @@ public class Etherscan {
         do {
             numTxnsReceived = 0;
 
-            // 10k transactions = approx. 14 MB downloaded
             JSONArray resp = (JSONArray) HttpsConnection.callAPI(
                     String.format(baseURL, address, firstBlock.toString())
             );
@@ -105,6 +104,7 @@ public class Etherscan {
                 firstBlock = new BigInteger( txns.get(txns.size()-1).blockNumber() );
 
             // Etherscan's API limit is 10k transactions per request
+            // 10k transactions = approx. 14 MB downloaded
         } while(numTxnsReceived == 10000);
 
         return txns;

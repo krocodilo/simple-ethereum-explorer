@@ -11,6 +11,9 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+/**
+ * Serves the subdirectory /address/
+ */
 @Controller
 @RequestMapping("/address")
 public class AddressController {
@@ -18,6 +21,9 @@ public class AddressController {
 //    final int pagesize = 50;
     Explorer eth = null;
 
+    /**
+     * Serves POST requests on /address/
+     */
     @PostMapping
     public RedirectView transactionsPOST(
             @RequestParam String address,
@@ -32,6 +38,9 @@ public class AddressController {
         return new RedirectView("address/"+address);
     }
 
+    /**
+     * Serves GET requests on /address/{address}
+     */
     @GetMapping("/{address}")
     public ModelAndView transactionsGET(
             @PathVariable String address,
@@ -57,8 +66,10 @@ public class AddressController {
         // If looking up a different address, or if its the first address
         try{
             if (eth == null || eth.getAddress().compareToIgnoreCase(address) != 0)
-                eth = new Explorer(address);   // todo - add ability to save multiple in "cache"
-        } catch (Exception e) { throw new Exception("Invalid address.", e); }
+                eth = new Explorer(address);
+        } catch (Exception e){
+            throw new Exception("Invalid address.", e);
+        }
 
 
         ArrayList<Txn> txns = new ArrayList<>(
@@ -68,7 +79,7 @@ public class AddressController {
 
         String bal = Explorer.getBalance(address, null).toPlainString();
 
-        mav.addObject("transactions", txns.toArray());     // Send array to the View, with the name of "transactions"
+        mav.addObject("transactions", txns.toArray());     // Send array to the View, with the var name "transactions"
         mav.addObject("currBalance", bal);
         mav.addObject("thisAddress", eth.getAddress());
 

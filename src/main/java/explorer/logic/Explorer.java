@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 import static explorer.logic.utils.Utils.fromWeiToETH;
 
 public class Explorer {
@@ -33,6 +34,10 @@ public class Explorer {
         this.address = address;
     }
 
+    /**
+     * Get the address you are exploring
+     * @return String with the address
+     */
     public String getAddress() {
         return address;
     }
@@ -42,9 +47,9 @@ public class Explorer {
     }
 
     /**
-     *
+     * Get ETH balance for a certain address, on a certain date
      * @param address String containing the address
-     * @param date if null or empty, will use current date and time
+     * @param date if null or empty, will get current balance
      * @return balance
      * @throws Exception with a message
      */
@@ -78,11 +83,18 @@ public class Explorer {
         return infura.getBalance(address, block);
     }
 
-
+    /**
+     * Get a subsection of the transaction list.
+     * @param block Block Number from which to start the list
+     * @param pagesize Size of the pages
+     * @param page Page Number (min = 1)
+     * @return List of transactions
+     * @throws Exception If any issue fetching the transactions from the API
+     */
     public List<Txn> getPageOfTransactions(BigInteger block, int pagesize, long page) throws Exception {
 
         // Update txns list
-        if( transactions.isEmpty()) // Todo - temporary. If not empty, must update
+        if( transactions.isEmpty()) // If not empty, must update
             fetchTransactionsSinceBlock(block);
 
         // Make sure page is not out of range
@@ -108,12 +120,22 @@ public class Explorer {
         transactions.addAll( Etherscan.getTxnsSinceBlock(address, block) );
     }
 
-
+    /**
+     * Get the list of transactions of an address after a certain block
+     * @param block Block number
+     * @return List of transactions
+     * @throws Exception with a message. In case of any error in the connection or the reply from the API
+     */
     public ArrayList<Txn> getTxnsSinceBlock(BigInteger block) throws Exception {
         return Etherscan.getTxnsSinceBlock(address, block);
     }
 
-
+    /**
+     * Get all transaction info
+     * @param txnHash Transaction Hash
+     * @return Map/Dictionary with the name and value of each field
+     * @throws Exception with a message. In case of error in the connection to the API, or error in the response
+     */
     public static Map<String, String> getTransactionInfo(String txnHash) throws Exception {
 
         Infura infura = new Infura();

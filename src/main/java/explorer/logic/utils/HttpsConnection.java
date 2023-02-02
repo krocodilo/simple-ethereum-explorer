@@ -59,7 +59,7 @@ public class HttpsConnection {
     /**
      * Executes an HTTPS request and returns raw data
      * @param url String containing the URL
-     * @return raw data
+     * @return String with raw response
      * @throws IOException If an error occurs attempting to, or during the connection
      */
     private static String httpsCall(String url) throws IOException{
