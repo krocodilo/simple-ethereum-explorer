@@ -26,28 +26,46 @@ If a user requests to view transactions associated with the address `0xaa7a9ca87
 
 ---
 
-## -> My Solution
-#### Technologies Used
-- IntelliJ IDEA as the IDE
-- Java, using the Spring Boot framework for the creation and management of webservices.
-  - Web3j library. 
-- Thymeleaf, for rendering of variables and programming logic in the web service's Views (I used Spring MVC (Model-View-Controller)).
-- Javascript, for fetching information from a REST API created using Spring Boot.
+## My Solution
+#### \> Description
+Java Spring Boot application, that serves web content (on port 8080, by default), and runs a REST service to provide historical ETH balance, at the user's request.
 
-- Infura API, to get the historical balance of an address at a specific timestamp/block
-- Etherscan API
+The only feature it does not implement is the listing of token balances (and token historical balance).
 
-#### Mechanics / Logic
+#### \> Technologies Used
+- Backend
+  - IntelliJ IDEA as the IDE
+  - Java - using the Spring Boot framework for the creation and management of webservices.
+    - Web3j library. 
+
+- Frontend (besides HTML and CSS)
+  - Bootstrap - for quick and easy to use themes.
+  - Javascript - for fetching information from a REST API created using Spring Boot.
+  - Thymeleaf - works in Spring for rendering of variables and programming logic in the web service's Views when passed through the Controllers.
+  
+- Data Providers
+  - Infura API - to get the historical balance of an address at a specific timestamp/block.
+  - Etherscan API - to get block number closest to a certain timestamp, and to get the transactions list.
 
 
-#### Improvements Needed
-- Have a cache for the most recent requests
+#### \> Further Improvements
+- Have a cache for the most recent requests.
+  - Ideally, find a way to identify requests for different sessions, attributing a new `Explorer()` object to each new session.
 - Split API requests into different threads, to avoid waiting so long for large transaction lists.
-- Pagination
+- Pagination in the UI, when showing the list of transactions (I left some unused code for that in the Explorer class).
+- Sometimes, Etherscan API is unable to find closest block to certain timestamps.
 
 
-#### Instructions
+- To get historical token balances:
+  - Alchemy API is able to serve that information, as well as, provide the list of transactions to/by an address AND distinguish between the type of transfer (basic, ERC-20, etc...) AND provide current and historical ETH balance. I only discovered this API after developing this program.
+  - If not willing to use an API:
+    - ERC-20 standard defines some basic necessary methods. Most importantly, `transfer()` and `transferFrom()`.
+The call for these methods is saved in binary in the **input** field of transactions,
+and follows the format: `'transfer(' + 'toAddress' + 'value'`. The first part appears as `0xa9059cbb` at the start of the **input** field (which is the same string as in the **methodId** field, provided by the Etherscan API).
+This could be used to identify and read token transactions directly from the blockchain.
+
+#### \> Instructions
 - `java -version` make sure you use the binaries of Java 17 or more recent
 - `java -jar <filename>`
 - Access to `localhost:8080` on your browser
-- Ctrl+C - to exit
+- Ctrl+C, to exit the program
