@@ -25,30 +25,34 @@ If a user requests to view transactions associated with the address `0xaa7a9ca87
 - Do the same task above to include tokens amounts (other than ETH)
 
 ---
+---
+---
 
 ## My Solution
-#### \> Description
+### \> Description
 Java Spring Boot application, that serves web content (on port 8080, by default), and runs a REST service to provide historical ETH balance, at the user's request.
+
+It shows current and historical ETH balance, a list of all transactions, and information for each transaction. In the transaction list, it shows icons for when transactions have errors, or when the transaction was an interaction with a smart contract.
 
 The only feature it does not implement is the listing of token balances (and token historical balance).
 
-#### \> Technologies Used
+---
+### \> Technologies Used
 - Backend
-  - IntelliJ IDEA as the IDE
-  - Java - using the Spring Boot framework for the creation and management of webservices.
-    - Web3j library. 
+  - Java language, with the Web3j library (for connecting to Infura and also includes some utilities).
+  - Spring Boot framework - for the creation and management of webservices.
 
 - Frontend (besides HTML and CSS)
-  - Bootstrap - for quick and easy to use themes.
+  - Bootstrap - for quick and easy-to-use themes.
   - Javascript - for fetching information from a REST API created using Spring Boot.
-  - Thymeleaf - works in Spring for rendering of variables and programming logic in the web service's Views when passed through the Controllers.
+  - Thymeleaf - works with Spring Boot, for rendering variables and programming logic in the Views, when passed through the Controllers.
   
 - Data Providers
   - Infura API - to get the historical balance of an address at a specific timestamp/block.
   - Etherscan API - to get block number closest to a certain timestamp, and to get the transactions list.
 
-
-#### \> Further Improvements
+---
+### \> Further Improvements
 - Have a cache for the most recent requests.
   - Ideally, find a way to identify requests for different sessions, attributing a new `Explorer()` object to each new session.
 - Split API requests into different threads, to avoid waiting so long for large transaction lists.
@@ -64,8 +68,9 @@ The call for these methods is saved in binary in the **input** field of transact
 and follows the format: `'transfer(' + 'toAddress' + 'value'`. The first part appears as `0xa9059cbb` at the start of the **input** field (which is the same string as in the **methodId** field, provided by the Etherscan API).
 This could be used to identify and read token transactions directly from the blockchain.
 
-#### \> Instructions
-- `java -version` make sure you use the binaries of Java 17 or more recent
-- `java -jar <filename>`
-- Access to `localhost:8080` on your browser
-- Ctrl+C, to exit the program
+---
+### \> Instructions
+- `java -version` - make sure you use the binaries of Java 17 or more recent.
+- `java -jar packages/<filename>.jar`
+- Access `localhost:8080` on your browser.
+- Ctrl+C, to exit the program.
